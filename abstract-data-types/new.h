@@ -7,5 +7,5 @@ void * new (const void * type, ...);
 void delete (void * item);
 
 
-#endif
+#endif /* NEW_H */
 

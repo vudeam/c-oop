@@ -6,9 +6,6 @@
 #include "new.h"
 
 
-const void * Set = 0;
-
-
 void * new (const void * type, ...) {
 	struct Node * element = node_create(0);
 
@@ -52,4 +49,5 @@ int differ (const void * a, const void * b) {
 
 /* to keep compiler happy */
 const void * Object;
+const void * Set = 0;
 
