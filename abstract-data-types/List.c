@@ -4,6 +4,7 @@
 
 #include "list.h"
 #include "new.h"
+#include "apply.h"
 
 
 void * new (const void * type, ...) {
@@ -45,6 +46,25 @@ int contains (const void * _list, const void * _element) {
 /* Objects differ exactly when the array indicies representing them differ. */
 int differ (const void * a, const void * b) {
 	return a != b;
+}
+
+int apply (const void * _list,
+		       int (* action) (void * object, va_list ap),
+					 ...) {
+	const struct Node * list = _list;
+	va_list args;
+	size_t count_processed = 0;
+
+	va_start (args, action);
+	for (const struct Node * buf = list;
+			 buf && buf -> next;
+			 buf = buf -> next) {
+		count_processed ++;
+		if (! action ((void *) buf, args))        /* break if action() returns 0 */
+			break;
+	}
+
+	return count_processed;
 }
 
 /* to keep compiler happy */

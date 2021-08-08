@@ -12,7 +12,8 @@
 
 
 int apply (const void * set,
-		int (* action) (void * object, va_list ap), ...);
+		       int (* action) (void * object, va_list ap),
+					 ...);
 
 
 #endif /* APPLY_H */
