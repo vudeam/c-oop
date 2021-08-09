@@ -40,6 +40,15 @@ void delete (void * self) {
 	free (self);
 }
 
+void * clone (const void * self) {        /* experimental implementation (not presented in the book) */
+	const struct Class * const * cp = self;
+
+	if (self && * cp && (* cp) -> clone)
+		return (* cp) -> clone (self);
+
+	return 0;
+}
+
 int differ (const void * self, const void * b) {
 	const struct Class * const * cp = self;
 
@@ -111,10 +120,10 @@ static int String_differ (const void * _self, const void * _b) {
  */
 static const struct Class _String = {
 	sizeof (struct String),
-	 String_ctor,
-	 String_dtor,
-	 String_clone,
-	 String_differ
+	& String_ctor,
+	& String_dtor,
+	& String_clone,
+	& String_differ
 };
 
 const void * String = & _String;
