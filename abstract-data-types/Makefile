@@ -27,6 +27,7 @@ List.o: List.c
 list.o: list.c
 	$(CC) -c $(CFLAGS) $< -o $@
 
+
 # HELP:
 # $^ - all the prerequisites with spaces between them
 # $< - name of the first prerequisite

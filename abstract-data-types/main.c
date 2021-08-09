@@ -7,6 +7,7 @@
 #include "Set.h"
 #include "list.h"
 #include "apply.h"
+#include "store.h"
 
 
 int print_node (void * node, va_list ap);
@@ -18,6 +19,13 @@ int main(void) {
 	void * c = new(Object);
 
 	apply (s, print_node);
+	// apply (s,
+	// 		   storev,
+	// 			 stdout,
+	// 			 "ELEMENT:%p\tDATA:%p\tNEXT:%p\n",
+	// 			 s,
+	// 			 s,
+	// 			 s);
 
 	if (contains(s, a) && contains(s, b))
 		puts("ok");
@@ -40,7 +48,7 @@ int main(void) {
 }
 
 int print_node (void * _node, va_list ap) {
-	struct Node * element = _node;
+	const struct Node * element = _node;
 
 	printf ("ELEMENT:%p\tDATA:%p\tNEXT:%p\n",
 			    (void *) element,
