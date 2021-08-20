@@ -7,8 +7,6 @@ static enum tokens token;        /* current input symbol */
 
 static jmp_buf onError;
 
-void error (const char * fmt, ...);
-
 int main (void) {
     volatile int errors = 0;
     char buf [BUFSIZ];
