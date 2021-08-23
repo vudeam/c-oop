@@ -6,7 +6,6 @@
 #include <string.h>
 #include <stdarg.h>
 
-
 #include "parse.h"
 #include "value.h"
 
@@ -16,8 +15,6 @@ static void * product (void);
 static void * factor (void);
 
 static enum tokens token;        /* current input symbol */
-
-static jmp_buf onError;
 
 static double number;            /* if NUMBER: numerical value */
 
@@ -46,7 +43,6 @@ static enum tokens scan (const char * buf) {        /* return token = next input
 
 static void * sum (void) {
     void * result = product();
-
     const void * type;
 
     for (;;) {
@@ -67,9 +63,8 @@ static void * sum (void) {
     }
 }
 
-static void * product (void) {        /* EXPERIMENTAL */
+static void * product (void) {
     void * result = factor();
-
     const void * type;
 
     for (;;) {
@@ -82,7 +77,7 @@ static void * product (void) {        /* EXPERIMENTAL */
                 return result;
         }
         scan(0);
-        result = new(type, result, factor());        /* not sure about the last arg */
+        result = new(type, result, factor());
     }
 }
 
@@ -114,6 +109,8 @@ static void * factor (void) {
     return result;
 }
 
+static jmp_buf onError;
+
 int main (void) {
     volatile int errors = 0;
     char buf [BUFSIZ];
@@ -121,7 +118,7 @@ int main (void) {
     if (setjmp(onError))
         ++ errors;
 
-    /* while (gets(buf)) */
+    /* while (gets(buf)) - it says that gets() is deprecated */
     while (fgets(buf, BUFSIZ, stdin))
         if (scan(buf)) {
             void * e = sum();
@@ -142,7 +139,7 @@ void error (const char * fmt, ...) {
     va_start(ap, fmt);
     vfprintf(stderr, fmt, ap), putc('\n', stderr);
     va_end(ap);
-    
+
     longjmp(onError, 1);
 }
 

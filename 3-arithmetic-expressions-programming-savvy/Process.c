@@ -1,7 +1,6 @@
 #include <stdarg.h>
 #include <assert.h>
 #include <malloc.h>
-#include <stdio.h>
 
 #include "value.h"
 #include "Type.h"
@@ -26,6 +25,9 @@ void * new (const void * type, ...) {
 }
 
 static double exec (const void * tree) {
+    assert(tree && * (struct Type **) tree
+            && (* (struct Type **) tree) -> exec);
+
     return (* (struct Type **) tree) -> exec(tree);
 }
 
@@ -36,6 +38,7 @@ void process (const void * tree) {
 void delete (void * tree) {
     assert(tree && * (struct Type **) tree
             && (* (struct Type **) tree) -> delete);
+
     (* (struct Type **) tree) -> delete(tree);
 }
 
@@ -63,27 +66,19 @@ static void freeBin (void * tree) {
     free(tree);
 }
 
-/*
-static void doBin (const void * tree) {
-    exec(((struct Bin*) tree) -> left);
-    exec(((struct Bin*) tree) -> right);
-    printf(" %s", (* (struct Type **) tree) -> name);
-}
-*/
-
 static double doAdd (const void * tree) {
     return exec(((struct Bin *) tree) -> left) +
-        exec(((struct Bin *) tree) -> left);
+           exec(((struct Bin *) tree) -> left);
 }
 
 static double doSub (const void * tree) {
     return exec(((struct Bin *) tree) -> left) -
-        exec(((struct Bin *) tree) -> left);
+           exec(((struct Bin *) tree) -> left);
 }
 
 static double doMul (const void * tree) {
     return exec(((struct Bin *) tree) -> left) *
-        exec(((struct Bin *) tree) -> left);
+           exec(((struct Bin *) tree) -> left);
 }
 
 /**
@@ -96,6 +91,39 @@ static struct Type _Mul = { "*", & mkBin, & doMul, & freeBin };
 const void * Add = & _Add;
 const void * Sub = & _Sub;
 const void * Mul = & _Mul;
+
+/****************************************************************************/
+
+
+/*************************************************************
+ * struct Bin - binary operations (new(), exec() and delete()
+ ************************************************************/
+
+static void * mkUnr (va_list ap) {
+    struct Unr * node = malloc(sizeof(struct Unr));
+
+    assert(node);
+
+    node -> arg = va_arg(ap, void *);
+
+    return node;
+}
+
+static void freeUnr (void * tree) {
+    delete(((struct Unr *) tree) -> arg);
+    free(tree);
+}
+
+static double doMinus (const void * tree) {
+    return - exec(((struct Unr *) tree) -> arg);
+}
+
+/**
+ * create unop descriptors
+ */
+static struct Type _Minus = { "", & mkUnr, & doMinus, & freeUnr };
+
+const void * Minus = & _Minus;
 
 /****************************************************************************/
 
@@ -115,22 +143,15 @@ static void * mkVal (va_list ap) {
 }
 
 static double doVal (const void * tree) {
-    /* printf(" %g", ((struct Val *) tree) -> value); */
     return ((struct Val *) tree) -> value;
-}
-
-static double doMns (const void * tree) {
-    return -1 * ((struct Val *) tree) -> value;
 }
 
 /**
  * create value descriptors
  */
 static struct Type _Value = { "", & mkVal, & doVal, & free };
-static struct Type _Minus = { "", & mkVal, & doMns, & free };
 
 const void * Value = & _Value;
-const void * Minus = & _Minus;
 
 /****************************************************************************/
- 
+
