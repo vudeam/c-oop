@@ -68,17 +68,17 @@ static void freeBin (void * tree) {
 
 static double doAdd (const void * tree) {
     return exec(((struct Bin *) tree) -> left) +
-           exec(((struct Bin *) tree) -> left);
+           exec(((struct Bin *) tree) -> right);
 }
 
 static double doSub (const void * tree) {
     return exec(((struct Bin *) tree) -> left) -
-           exec(((struct Bin *) tree) -> left);
+           exec(((struct Bin *) tree) -> right);
 }
 
 static double doMul (const void * tree) {
     return exec(((struct Bin *) tree) -> left) *
-           exec(((struct Bin *) tree) -> left);
+           exec(((struct Bin *) tree) -> right);
 }
 
 /**
