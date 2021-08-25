@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -std=c99 --pedantic -Wall -Werror -g
 
 BINS = Point.out
-OBJS = main.o new.o Point.o
+OBJS = main.o new.o Point.o Circle.o
 
 all: $(BINS)
 
