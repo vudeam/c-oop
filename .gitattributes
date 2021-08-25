@@ -1,0 +1,3 @@
+# suppress wrong language detection for "private" header files (.r instead of .h)
+**/*.r linguist-language=C
+
