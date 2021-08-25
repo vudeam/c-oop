@@ -3,11 +3,7 @@
 
 
 extern const void * Point;        /* new(Point, x, y); */
-
-struct Point {
-    const void * class;
-    int x, y;                  /* coordinates */
-};
+extern const void * Circle;       /* new(Circle, x, y, rad); */
 
 void move (void * point, int dx, int dy);
 

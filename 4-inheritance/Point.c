@@ -6,6 +6,14 @@
 #include "Point.h"
 
 
+/**
+ * declaration of Point
+ */
+struct Point {
+    const void * class;
+    int x, y;                  /* coordinates */
+};
+
 void move (void * _self, int dx, int dy) {
     struct Point * self = _self;
 
