@@ -2,14 +2,14 @@
 #include <stdarg.h>
 
 #include "new.r"
+#include "new.h"
 #include "Circle.r"
+#include "Circle.h"
 
 
 static void * Circle_ctor (void * _self, va_list * app) {
-    struct Circle * self = _self;
-
-    set_x(self, va_arg(* app, int));    /* invoke setter macros */
-    set_y(self, va_arg(* app, int));
+    struct Circle * self = 
+        ((const struct Class * ) Point) -> ctor(_self, app);
 
     self -> rad = va_arg(* app, int);
 
