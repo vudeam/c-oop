@@ -8,6 +8,8 @@
 
 enum tokens {
     NUMBER    = 1,
+    VAR,
+    LET,
     PLUS      = '+',
     MINUS     = '-',
     MULTIPLY  = '*',

@@ -10,9 +10,10 @@
 #include "value.h"
 
 
-static void * sum (void);
+static void * sum     (void);
 static void * product (void);
-static void * factor (void);
+static void * factor  (void);
+static void * stmt    (void);
 
 static enum tokens token;        /* current input symbol */
 
@@ -110,6 +111,10 @@ static void * factor (void) {
             result = new(Value, number);
             break;
 
+        case VAR:
+            result = symbol;
+            break;
+
         case '(':
             scan(0);
             result = sum();
@@ -117,6 +122,24 @@ static void * factor (void) {
     }
     scan(0);
     return result;
+}
+
+static void * stmt (void) {
+    void * result;
+
+    switch (token) {
+        case LET:
+            if (scan(0) != VAR) error("bad assignment");
+            
+            result = symbol;
+            if (scan(0) != '=') error("expecting '='");
+            scan(0);
+
+            return new(Assign, result, sum());
+
+        default:
+            return sum();
+    }
 }
 
 static jmp_buf onError;
@@ -132,6 +155,7 @@ int main (void) {
     while (fgets(buf, BUFSIZ, stdin))
         if (scan(buf)) {
             void * e = sum();
+            /* void * e = stmt(); */
 
             if (token)
                 error("trash after sum");
