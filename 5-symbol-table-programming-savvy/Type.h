@@ -3,6 +3,10 @@
 
 #include <stdarg.h>
 
+#include "Name.r"
+
+#define funct(tree)    (((struct Math *) left(tree)) -> funct)
+
 
 struct Type {
     const char * name;
@@ -26,6 +30,10 @@ struct Val {
     double value;
 };
 
+struct Math {
+    struct Name _;
+    double (* funct) (double);
+};
 
 #endif        /* TYPE_H */
 

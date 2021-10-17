@@ -8,6 +8,7 @@
 
 #include "parse.h"
 #include "value.h"
+#include "Name.h"
 
 
 static void * sum     (void);
@@ -154,8 +155,8 @@ int main (void) {
     /* while (gets(buf)) - it says that gets() is deprecated */
     while (fgets(buf, BUFSIZ, stdin))
         if (scan(buf)) {
-            void * e = sum();
-            /* void * e = stmt(); */
+            /* void * e = sum(); */
+            void * e = stmt();
 
             if (token)
                 error("trash after sum");

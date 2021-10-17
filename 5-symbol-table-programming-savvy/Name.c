@@ -5,6 +5,8 @@
 
 #include "Name.r"
 #include "Name.h"
+#include "Var.h"
+#include "value.h"
 #include "parse.h"
 
 #define NAMES    8UL    /* initial allotment of Names table entries */

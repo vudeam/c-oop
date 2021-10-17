@@ -9,6 +9,7 @@
 enum tokens {
     NUMBER    = 1,
     VAR,
+    CONST,
     LET,
     PLUS      = '+',
     MINUS     = '-',
