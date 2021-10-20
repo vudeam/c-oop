@@ -28,7 +28,7 @@ int main (void) {
         puts("not commutative");
 
     delete(o), delete(a);
-    delete(Any);
+    delete((void *) Any);
 
     return 0;
 }
