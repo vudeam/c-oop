@@ -14,8 +14,12 @@ void         delete  (void * self);
 const void * classOf (const void * self);
 size_t       sizeOf  (const void * self);
 
+void *       ctor    (void * self, va_list * app);
+void *       dtor    (void * self);
 int          differ  (const void * self, const void * other);
 int          puto    (const void * self, FILE * fp);
+
+const void * super   (const void * self);
 
 
 #endif        /* OBJECT_H */
