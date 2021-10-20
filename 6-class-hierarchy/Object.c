@@ -109,7 +109,7 @@ static void * Object_dtor (void * _self) {
 }
 
 static int Object_differ (const void * _self, const void * _other) {
-    return _self == _other;        /* like that ? */
+    return _self != _other;        /* like that ? */
 }
 
 static int Object_puto (const void * _self, FILE * fp) {
