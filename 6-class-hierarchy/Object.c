@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdarg.h>
 #include <assert.h>
+#include <malloc.h>
 #include <string.h>
 
 #include "Object.r"
@@ -11,6 +12,42 @@
 /**
  * "public" definitions
  */
+
+void * new (const void * _class, ...) {
+    const struct Class * class = _class;
+    struct Object * object;
+    va_list ap;
+
+    assert(class && class -> size);
+    object = calloc(1, class -> size);
+    assert(object);
+
+    object -> class = class;
+
+    va_start(ap, _class);
+    object = ctor(object, & ap);
+    va_end(ap);
+
+    return object;
+}
+
+void * ctor (void * _self, va_list * app) {
+    const struct Class * class = classOf(_self);
+
+    assert(class -> ctor);
+    return class -> ctor(_self, app);
+}
+
+void delete (void * _self) {
+    if (_self) free(dtor(_self));
+}
+
+void * dtor (void * _self) {
+    const struct Class * class = classOf(_self);
+
+    assert(class -> dtor);
+    return class -> dtor(_self);
+}
 
 const void * classOf (const void * _self) {
     const struct Object * self = _self;
