@@ -1,8 +1,9 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <stddef.h>
 #include <stdio.h>
+#include <stdarg.h>
+#include <stddef.h>
 
 
 extern const void * Class;     /* new(Class, "name", super, size, sel, meth, ... 0); */
