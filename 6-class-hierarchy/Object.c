@@ -81,6 +81,20 @@ size_t sizeOf (const void * _self) {
     return class -> size;
 }
 
+int differ (const void * _self, const void * _other) {
+    const struct Class * class = classOf(_self);
+
+    assert(class && class -> differ);
+    return class -> differ(_self, _other);
+}
+
+int puto (const void * _self, FILE * fp) {
+    const struct Class * class = classOf(_self);
+
+    assert(class && class -> puto);
+    return class -> puto(_self, fp);
+}
+
 
 /***************************************
  * Object-specific definitions
