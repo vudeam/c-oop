@@ -103,7 +103,6 @@ static void * Class_ctor (void * _self, va_list * app) {
     }
 }
 
-
 static void * Class_dtor (void * _self) {
     struct Class * self = _self;
     fprintf(stderr, "%s: cannot destroy class\n", self -> name);
@@ -134,4 +133,7 @@ static const struct Class object [] = {
         & Object_puto
     }
 };
+
+const void * Object = object;
+const void * Class  = object + 1;
 
