@@ -9,10 +9,11 @@
 #include "Object.h"
 
 
-/**
+/***************************************
  * "public" definitions
- */
+ **************************************/
 
+/* constructors */
 void * new (const void * _class, ...) {
     const struct Class * class = _class;
     struct Object * object;
@@ -30,7 +31,12 @@ void * new (const void * _class, ...) {
 
     return object;
 }
+void * super_ctor (const void * _class, void * _self, va_list * app) {
+    const struct Class * superclass = super(_class);
 
+    assert(_self && superclass -> ctor);
+    return superclass -> ctor(_self, app);
+}
 void * ctor (void * _self, va_list * app) {
     const struct Class * class = classOf(_self);
 
@@ -38,15 +44,28 @@ void * ctor (void * _self, va_list * app) {
     return class -> ctor(_self, app);
 }
 
+/* destructors */
 void delete (void * _self) {
     if (_self) free(dtor(_self));
 }
+void * super_dtor (const void * _class, void * _self) {
+    const struct Class * superclass = super(_class);
 
+    assert(_self && superclass -> dtor);
+    return superclass -> dtor(_self);
+}
 void * dtor (void * _self) {
     const struct Class * class = classOf(_self);
 
     assert(class -> dtor);
     return class -> dtor(_self);
+}
+
+const void * super (const void * _self) {
+    const struct Class * self = _self;
+    
+    assert(self && self -> super);
+    return self -> super;
 }
 
 const void * classOf (const void * _self) {
@@ -62,17 +81,10 @@ size_t sizeOf (const void * _self) {
     return class -> size;
 }
 
-const void * super (const void * _self) {
-    const struct Class * self = _self;
-    
-    assert(self && self -> super);
-    return self -> super;
-}
 
-
-/**
+/***************************************
  * Object-specific definitions
- */
+ **************************************/
 
 static void * Object_ctor (void * _self, va_list * app) {
     return _self;
@@ -93,9 +105,9 @@ static int Object_puto (const void * _self, FILE * fp) {
 }
 
 
-/**
+/***************************************
  * Class-specific definitions
- */
+ **************************************/
 
 static void * Class_ctor (void * _self, va_list * app) {
     struct Class * self = _self;
@@ -148,9 +160,9 @@ static void * Class_dtor (void * _self) {
 }
 
 
-/**
+/***************************************
  * creating despriptors
- */
+ **************************************/
 
 static const struct Class object [] = {
     {
