@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -std=c99 --pedantic -Wall -Werror -g
 
-BINS = any
+BINS = any.out
 OBJS = any.c Object.o
 
 all: $(BINS)

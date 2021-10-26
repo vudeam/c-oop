@@ -63,7 +63,7 @@ void * dtor (void * _self) {
 
 const void * super (const void * _self) {
     const struct Class * self = _self;
-    
+
     assert(self && self -> super);
     return self -> super;
 }
